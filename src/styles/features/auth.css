@@ -1,0 +1,141 @@
+/* ============================================================
+   AUTH BACKGROUND
+   ============================================================ */
+@layer components {
+  .auth-bg {
+    @apply absolute inset-0 -z-10 overflow-hidden bg-gray-100;
+  }
+  .auth-bg-glow-wrap {
+    @apply absolute inset-0 flex items-center justify-center;
+  }
+  .auth-bg-glow {
+    @apply w-[1200px] h-[1200px] bg-[radial-gradient(circle,rgba(239,246,255,1)_0%,rgba(255,255,255,0)_60%)] animate-[pulse_10s_cubic-bezier(0.4,0,0.6,1)_infinite];
+  }
+}
+
+/* ============================================================
+   LOGIN PAGE
+   ============================================================ */
+@layer components {
+  .login-page {
+    @apply relative min-h-screen w-full overflow-x-hidden bg-transparent;
+  }
+  .login-grid {
+    @apply relative z-10 grid min-h-screen grid-cols-1 lg:grid-cols-2;
+  }
+  .login-left-panel {
+    @apply hidden lg:flex flex-col justify-center pl-32 pr-12 xl:pl-48;
+  }
+  .login-left-inner {
+    @apply max-w-lg;
+  }
+  .login-brand {
+    @apply flex items-center gap-3 mb-10;
+  }
+  .login-brand-name {
+    @apply text-xl font-bold tracking-tight text-slate-900;
+  }
+  .login-features-list {
+    @apply space-y-8;
+  }
+  .login-feature-item {
+    @apply flex gap-6;
+  }
+  .login-feature-icon-wrap {
+    @apply text-slate-400 mt-1 transition-colors duration-300;
+  }
+  .login-feature-item:hover .login-feature-icon-wrap {
+    @apply text-indigo-500;
+  }
+  .login-feature-title {
+    @apply text-base font-bold text-slate-900 mb-1;
+  }
+  .login-feature-desc {
+    @apply text-sm text-slate-500 leading-relaxed;
+  }
+  .login-right-panel {
+    @apply flex flex-col justify-center px-6 py-12 lg:pl-24 lg:items-start;
+  }
+  .login-mobile-header {
+    @apply lg:hidden flex flex-col items-center mb-10;
+  }
+  .login-mobile-title {
+    @apply text-2xl font-bold text-slate-900 tracking-tight;
+  }
+  .login-card-wrap {
+    @apply w-full max-w-md lg:ml-8;
+  }
+}
+
+/* ============================================================
+   LOGIN CARD
+   ============================================================ */
+@layer components {
+  .login-card-outer {
+    @apply flex items-center justify-center p-4;
+  }
+  .login-card {
+    @apply w-full max-w-105 rounded-3xl border border-slate-200/60 bg-white/95 backdrop-blur-xl shadow-[0_20px_50px_rgba(0,0,0,0.08)] text-slate-900 overflow-hidden;
+  }
+  .login-card-body {
+    @apply p-8 sm:p-10;
+  }
+  .login-card-header {
+    @apply flex flex-col items-center mb-10;
+  }
+  .login-card-icon-wrap {
+    @apply w-16 h-16 rounded-2xl bg-indigo-50 flex items-center justify-center mb-6 border border-indigo-100/80 shadow-sm shadow-indigo-100/50;
+  }
+  .login-card-title {
+    @apply text-3xl font-extrabold text-center tracking-tight text-slate-900;
+  }
+  .login-card-subtitle {
+    @apply text-sm text-slate-500 mt-3 text-center max-w-[280px] leading-relaxed;
+  }
+  .login-error-box {
+    @apply mb-6 p-4 rounded-2xl bg-red-50 border border-red-100 flex items-start gap-3 text-red-600;
+    animation: fade-in-down 0.3s ease both;
+  }
+  .login-error-text {
+    @apply text-sm font-medium;
+  }
+  .login-form {
+    @apply space-y-6;
+  }
+  .login-field {
+    @apply space-y-2.5;
+  }
+  .login-label {
+    @apply block text-sm font-semibold text-slate-700 ml-0.5;
+  }
+  .login-label-row {
+    @apply flex justify-between items-center ml-0.5;
+  }
+  .login-forgot-link {
+    @apply text-xs font-bold text-indigo-600 hover:text-indigo-700 transition-colors;
+  }
+  .login-input {
+    @apply w-full px-4 py-3 rounded-2xl bg-slate-50/50 border border-slate-200 text-slate-900 placeholder-slate-400 outline-none transition-all duration-200 hover:border-slate-300 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10;
+  }
+  .login-password-wrap {
+    @apply relative;
+  }
+  .login-password-input {
+    @apply w-full px-4 py-3 pr-12 rounded-2xl bg-slate-50/50 border border-slate-200 text-slate-900 placeholder-slate-400 outline-none transition-all duration-200 hover:border-slate-300 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10;
+  }
+  .login-password-toggle {
+    @apply absolute inset-y-0 right-0 flex items-center px-4 text-slate-400 hover:text-indigo-600 transition-colors;
+  }
+  .login-submit-btn {
+    @apply w-full h-14 py-3.5 rounded-2xl bg-gradient-to-br from-indigo-600 to-blue-700 hover:from-indigo-500 hover:to-blue-600 active:scale-[0.98] font-bold text-base text-white transition-all duration-300 shadow-xl shadow-indigo-200/50 disabled:opacity-70 disabled:grayscale disabled:cursor-not-allowed disabled:active:scale-100 flex items-center justify-center gap-2.5 mt-2;
+  }
+  .login-card-footer {
+    @apply mt-10 pt-8 border-t border-slate-100 text-center;
+  }
+  .login-card-footer-text {
+    @apply text-sm text-slate-500;
+  }
+  .login-support-link {
+    @apply font-bold text-indigo-600 hover:text-indigo-700;
+  }
+}

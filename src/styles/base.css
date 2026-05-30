@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+/* ============================================================
+   GLOBAL KEYFRAMES
+   ============================================================ */
+@keyframes fade-in-down {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============================================================
+   LAYOUT — MainLayout shell
+   ============================================================ */
+@layer components {
+  .app-shell {
+    @apply flex h-screen bg-slate-50 font-sans text-slate-800;
+  }
+  .app-content {
+    @apply flex-1 flex flex-col overflow-hidden;
+  }
+  .app-main {
+    @apply flex-1 overflow-auto;
+  }
+}
