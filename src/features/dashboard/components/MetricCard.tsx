@@ -49,32 +49,32 @@ const MetricCard: React.FC<MetricCardProps> = ({
   const styles = variantStyles[variant] || variantStyles.primary;
 
   return (
-    <div className="metric-card">
+    <div className="group bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-lg hover:shadow-slate-200/60 transition-all duration-300 p-4 sm:p-5 flex flex-col justify-between min-h-[140px] sm:min-h-[150px] hover:-translate-y-1">
       {/* Top */}
-      <div className="metric-card-top">
-        <div className={`metric-card-icon-wrap ${styles.bg}`}>
+      <div className="flex items-start justify-between">
+        <div className={`p-2.5 rounded-xl transition-transform duration-300 group-hover:scale-105 group-hover:rotate-2 ${styles.bg}`}>
           <Icon size={22} className={styles.icon} />
         </div>
 
         {extra && (
-          <span className={`metric-card-badge ${styles.badge}`}>{extra}</span>
+          <span className={`text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-wide ${styles.badge}`}>{extra}</span>
         )}
       </div>
 
       {/* Bottom */}
-      <div className="metric-card-bottom">
-        <div className="metric-card-count-row">
-          <h3 className="metric-card-count">{count}</h3>
+      <div className="mt-4">
+        <div className="flex items-end gap-2 flex-wrap">
+          <h3 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight leading-none">{count}</h3>
 
           {trend && (
-            <span className={trend.isUp ? "metric-card-trend-up" : "metric-card-trend-down"}>
+            <span className={trend.isUp ? "text-xs font-bold flex items-center text-emerald-500" : "text-xs font-bold flex items-center text-rose-500"}>
               <span className="mr-1">{trend.isUp ? "↑" : "↓"}</span>
               {trend.value}
             </span>
           )}
         </div>
 
-        <p className="metric-card-title">{title}</p>
+        <p className="mt-2 text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-400 transition-colors group-hover:text-slate-600">{title}</p>
       </div>
     </div>
   );

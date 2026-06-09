@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { 
   LayoutGrid, AlertCircle, Clock, Users, Settings, 
@@ -43,33 +43,33 @@ const Sidebar = () => {
   };
 
   return (
-    <aside className={`sidebar ${isCollapsed ? 'w-20' : 'w-64'}`}>
+    <aside className={`bg-white border-r border-slate-200 flex flex-col justify-between hidden md:flex transition-all duration-300 ease-in-out ${isCollapsed ? 'w-20' : 'w-64'}`}>
       <div className="flex flex-col h-full">
-        <div className={`sidebar-header ${isCollapsed ? 'justify-center px-0' : 'justify-between px-6'}`}>
+        <div className={`h-16 flex items-center border-b border-slate-100 transition-all ${isCollapsed ? 'justify-center px-0' : 'justify-between px-6'}`}>
           {!isCollapsed && (
-            <span className="sidebar-logo">Horizon Blueprint</span>
+            <span className="text-xl font-bold text-slate-800 tracking-tight truncate">Horizon Blueprint</span>
           )}
           <button
             onClick={toggleSidebar}
-            className={`sidebar-toggle-btn ${isCollapsed ? 'mx-auto' : ''}`}
+            className={`p-1.5 rounded-lg border border-slate-200 text-slate-400 hover:bg-slate-50 hover:text-slate-600 transition-colors ${isCollapsed ? 'mx-auto' : ''}`}
           >
             {isCollapsed ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
           </button>
         </div>
 
-        <div className="sidebar-body">
+        <div className="p-4 overflow-hidden">
           <div className="relative">
             <button 
               onClick={() => setIsProjectSwitcherOpen(!isProjectSwitcherOpen)}
-              className={`sidebar-workspace w-full hover:bg-slate-800/50 transition-colors ${isCollapsed ? 'justify-center' : ''}`}
+              className={`flex items-center space-x-3 mb-6 p-2 transition-all w-full hover:bg-slate-800/50 ${isCollapsed ? 'justify-center' : ''}`}
             >
-              <div className="sidebar-workspace-avatar bg-blue-600 text-white">
+              <div className="shrink-0 w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">
                 {currentProject?.name.charAt(0) || 'P'}
               </div>
               {!isCollapsed && (
                 <div className="text-left truncate flex-1">
-                  <h3 className="sidebar-workspace-name">{currentProject?.name || 'Select Project'}</h3>
-                  <p className="sidebar-workspace-meta">{currentProject?.key || 'ACTIVE'}</p>
+                  <h3 className="text-sm font-semibold text-slate-900 truncate">{currentProject?.name || 'Select Project'}</h3>
+                  <p className="text-xs text-slate-400 truncate">{currentProject?.key || 'ACTIVE'}</p>
                 </div>
               )}
             </button>
@@ -102,15 +102,15 @@ const Sidebar = () => {
             )}
           </div>
 
-          <nav className="sidebar-nav">
+          <nav className="space-y-1">
             {navItems.map((item) => (
               <NavLink
                 key={item.label}
                 to={item.to}
                 title={isCollapsed ? item.label : ''}
                 className={({ isActive }) =>
-                  `sidebar-nav-link ${isCollapsed ? 'justify-center p-2' : 'space-x-3 px-3 py-2'} ${
-                    isActive ? 'sidebar-nav-link-active' : 'sidebar-nav-link-idle'
+                  `flex items-center rounded-lg text-sm font-medium transition-all ${isCollapsed ? 'justify-center p-2' : 'space-x-3 px-3 py-2'} ${
+                    isActive ? 'bg-blue-50 text-blue-700' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
                   }`
                 }
               >
@@ -121,7 +121,7 @@ const Sidebar = () => {
           </nav>
 
           <button
-            className={`sidebar-new-project-btn ${isCollapsed ? 'justify-center p-2' : 'space-x-2 px-4 py-2.5'}`}
+            className={`w-full mt-6 flex items-center bg-slate-800 text-white rounded-lg hover:bg-slate-700 transition-all overflow-hidden ${isCollapsed ? 'justify-center p-2' : 'space-x-2 px-4 py-2.5'}`}
             title={isCollapsed ? 'New Project' : ''}
           >
             <Plus size={16} className="shrink-0" />
@@ -129,13 +129,13 @@ const Sidebar = () => {
           </button>
         </div>
 
-        <div className="sidebar-footer mt-auto">
+        <div className="p-4 border-t border-slate-100 space-y-1 overflow-hidden mt-auto">
           <NavLink
             to="/support"
             title={isCollapsed ? 'Support' : ''}
             className={({ isActive }) =>
-              `sidebar-footer-link ${isCollapsed ? 'justify-center p-2' : 'space-x-3 px-3 py-2'} ${
-                isActive ? 'sidebar-footer-link-active' : 'sidebar-footer-link-idle'
+              `flex items-center rounded-lg text-sm font-medium transition-all ${isCollapsed ? 'justify-center p-2' : 'space-x-3 px-3 py-2'} ${
+                isActive ? 'bg-blue-50 text-blue-700' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
               }`
             }
           >
@@ -146,7 +146,7 @@ const Sidebar = () => {
           <button
             onClick={handleLogout}
             title={isCollapsed ? 'Sign Out' : ''}
-            className={`sidebar-signout-btn ${isCollapsed ? 'justify-center p-2' : 'space-x-3 px-3 py-2'}`}
+            className={`w-full flex items-center rounded-lg text-sm font-medium text-slate-600 hover:bg-red-50 hover:text-red-700 transition-all ${isCollapsed ? 'justify-center p-2' : 'space-x-3 px-3 py-2'}`}
           >
             <LogOut size={18} className="shrink-0" />
             {!isCollapsed && <span className="truncate">Sign Out</span>}

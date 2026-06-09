@@ -23,13 +23,13 @@ type MetricEntry = MetricCardProps & { id: string };
 export default function DashboardOverview() {
   const { homeData } = useHome();
   const summary = homeData?.summary;
-  
+
   const myWork = homeData?.myWork || [];
   const activities = homeData?.activities || [];
   const deadlines = homeData?.deadlines || [];
   const workflowStats = summary?.workflowStats || [];
   const totalCompletion = summary?.totalCompletion || 0;
-  
+
   const currentProject = homeData?.projects?.find(p => p.key === homeData.defaultProjectKey);
   const projectName = currentProject?.name || "Project Overview";
 
@@ -69,35 +69,35 @@ export default function DashboardOverview() {
   ];
 
   return (
-    <div className="dash-page">
+    <div className="mx-auto max-w-[1500px] p-4 lg:p-6 xl:p-8 space-y-6 text-slate-800">
       {/* Header */}
-      <div className="dash-page-header">
+      <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
         <div>
-          <div className="dash-page-breadcrumb">
+          <div className="mb-1 flex items-center gap-2 text-slate-400">
             <Home size={14} />
-            <span className="dash-page-breadcrumb-label">{projectName}</span>
+            <span className="text-[10px] font-bold uppercase tracking-widest">{projectName}</span>
           </div>
-          <h1 className="dash-page-title">Project Overview</h1>
+          <h1 className="text-2xl xl:text-3xl font-black tracking-tight text-slate-900">Project Overview</h1>
         </div>
 
-        <div className="dash-page-actions">
-          <div className="dash-page-search-wrap">
+        <div className="flex items-center gap-3">
+          <div className="hidden lg:flex items-center rounded-xl border border-slate-200 bg-white px-3 py-2 w-[220px] xl:w-[260px]">
             <Search size={16} className="text-slate-400" />
             <input
               placeholder="Search project..."
-              className="dash-page-search-input"
+              className="ml-2 w-full bg-transparent text-sm outline-none placeholder:text-slate-400"
             />
           </div>
-          <button className="dash-page-health-badge">Health: On Track</button>
+
         </div>
       </div>
 
       {/* Main grid */}
-      <div className="dash-grid">
+      <div className="grid grid-cols-12 gap-6">
         {/* Left content */}
-        <div className="dash-grid-left">
+        <div className="col-span-12 xl:col-span-8 space-y-6">
           {/* Metrics */}
-          <div className="dash-metrics-grid">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {metrics.map((metric) => (
               <MetricCard key={metric.id} {...metric} />
             ))}
@@ -111,7 +111,7 @@ export default function DashboardOverview() {
         </div>
 
         {/* Right rail */}
-        <div className="dash-grid-right">
+        <div className="col-span-12 xl:col-span-4 space-y-6">
           <ProgressOverview stats={workflowStats} totalCompletion={totalCompletion} />
           <DeadlineSection deadlines={deadlines} />
         </div>

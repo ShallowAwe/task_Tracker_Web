@@ -1,7 +1,2 @@
-/* Entry point — imports all styles in dependency order */
+/* Entry point — Tailwind + global keyframes */
 @import "./styles/base.css";
-@import "./styles/shared.css";
-@import "./styles/features/sidebar.css";
-@import "./styles/features/auth.css";
-@import "./styles/features/dashboard.css";
-@import "./styles/features/tickets.css";

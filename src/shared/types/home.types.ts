@@ -20,11 +20,11 @@ export interface DashboardSummary {
 export interface HomeResponse {
   hasProjects: boolean;
   defaultProjectKey: string | null;
-  projects: ProjectSummary[] | null;
-  summary: DashboardSummary | null;
-  myWork: Task[] | null;
-  activities: ActivityItem[] | null;
-  deadlines: Deadline[] | null;
+  projects?: ProjectSummary[] | null;
+  summary?: DashboardSummary | null;
+  myWork?: Task[] | null;
+  activities?: ActivityItem[] | null;
+  deadlines?: Deadline[] | null;
 }
 
 export interface SelectProjectRequest {

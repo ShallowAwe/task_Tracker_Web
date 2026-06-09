@@ -6,7 +6,8 @@ import TicketScreen from './features/tickets/pages/TicketScreen';
 import ProtectedRoute from './shared/components/ProtectedRoute';
 import { HomeProvider } from './shared/store/HomeContext';
 import HomeGuard from './shared/components/HomeGuard';
-import './App.css';
+import TeamScreen from './features/members/pages/TeamScreen';
+
 
 function App() {
   return (
@@ -26,9 +27,9 @@ function App() {
             <Route path="/dashboard" element={<DashboardOverview />} />
             <Route path="/issues" element={<TicketScreen />} />
             {/* Placeholder for other routes */}
-            <Route path="/sprints" element={<div className="ticket-page"><h1 className="ticket-page-title">Sprints Page</h1><p>Coming soon...</p></div>} />
-            <Route path="/team" element={<div className="ticket-page"><h1 className="ticket-page-title">Team Page</h1><p>Coming soon...</p></div>} />
-            <Route path="/settings" element={<div className="ticket-page"><h1 className="ticket-page-title">Settings Page</h1><p>Coming soon...</p></div>} />
+            <Route path="/sprints" element={<div className="flex flex-col h-full gap-6 p-6 overflow-hidden"><h1 className="text-2xl font-bold text-slate-900 tracking-tight">Sprints Page</h1><p>Coming soon...</p></div>} />
+            <Route path="/team" element={<TeamScreen />} />
+            <Route path="/settings" element={<div className="flex flex-col h-full gap-6 p-6 overflow-hidden"><h1 className="text-2xl font-bold text-slate-900 tracking-tight">Settings Page</h1><p>Coming soon...</p></div>} />
           </Route>
         </Route>
       </Route>

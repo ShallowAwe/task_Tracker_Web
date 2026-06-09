@@ -1,4 +1,5 @@
 import React from 'react';
+import { CheckCircle } from 'lucide-react';
 import { TicketStatus, TicketPriority } from '../types/dashboard.types';
 
 interface Task {
@@ -55,52 +56,64 @@ const getStatusStyles = (status: TicketStatus) => {
 
 const TasksTable: React.FC<TasksTableProps> = ({ tasks }) => {
   return (
-    <div className="tasks-card">
-      <div className="tasks-card-header">
-        <h3 className="tasks-card-title">Recent Assignments</h3>
-        <button className="tasks-card-view-all">View All Work</button>
+    <div className="bg-white border border-slate-200 rounded-2xl shadow-sm p-6 overflow-hidden min-h-[300px] h-[400px] flex flex-col justify-between">
+      <div className="flex justify-between items-center mb-6 shrink-0">
+        <h3 className="text-lg font-bold text-slate-800">Recent Assignments</h3>
+        <button className="text-[10px] font-black text-slate-400 hover:text-blue-600 transition-colors uppercase tracking-[0.2em] border border-slate-100 px-3 py-1.5 rounded-lg active:scale-95">View All Work</button>
       </div>
 
-      <div className="overflow-x-auto">
-        <table className="tasks-table">
-          <thead>
-            <tr className="tasks-table-head-row">
-              <th className="tasks-table-th">Task Title</th>
-              <th className="tasks-table-th-center">Status</th>
-              <th className="tasks-table-th-center hidden sm:table-cell">Priority</th>
-              <th className="tasks-table-th-right">Due Date</th>
-            </tr>
-          </thead>
-          <tbody className="tasks-table-body">
-            {tasks.map((task) => {
-              const pStyles = getPriorityStyles(task.priority);
-              const sStyles = getStatusStyles(task.status);
+      <div className="overflow-x-auto flex-1 flex flex-col">
+        {tasks.length === 0 ? (
+          <div className="flex-1 flex flex-col items-center justify-center text-center p-8 bg-slate-50/50 rounded-xl border border-dashed border-slate-200">
+            <div className="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center text-blue-500 mb-3">
+              <CheckCircle size={24} />
+            </div>
+            <h4 className="text-sm font-bold text-slate-800 mb-1">No Active Assignments</h4>
+            <p className="text-xs text-slate-500 max-w-xs leading-relaxed">
+              You are all caught up! Any new issues assigned to you will show up here.
+            </p>
+          </div>
+        ) : (
+          <table className="w-full text-left border-collapse">
+            <thead>
+              <tr className="text-[10px] text-slate-400 uppercase tracking-[0.2em] border-b border-slate-100">
+                <th className="pb-4 pt-1 font-bold">Task Title</th>
+                <th className="pb-4 pt-1 font-bold text-center">Status</th>
+                <th className="pb-4 pt-1 font-bold text-center hidden sm:table-cell">Priority</th>
+                <th className="pb-4 pt-1 font-bold text-right tabular-nums hidden md:table-cell">Due Date</th>
+              </tr>
+            </thead>
+            <tbody className="text-sm">
+              {tasks.map((task) => {
+                const pStyles = getPriorityStyles(task.priority);
+                const sStyles = getStatusStyles(task.status);
 
-              return (
-                <tr key={task.id} className="tasks-table-row">
-                  <td className="tasks-table-td-title">
-                    <div className="flex flex-col">
-                      <span className="tasks-table-task-id">{task.id}</span>
-                      <span className="tasks-table-task-name">{task.title}</span>
-                    </div>
-                  </td>
-                  <td className="tasks-table-td-center">
-                    <span className={`tasks-table-status-badge ${sStyles}`}>
-                      {task.status.replace('_', ' ')}
-                    </span>
-                  </td>
-                  <td className="py-4 hidden sm:table-cell">
-                    <div className="tasks-table-priority-cell">
-                      <div className={`tasks-table-priority-dot ${pStyles.dot}`}></div>
-                      <span className={`text-[10px] transition-colors ${pStyles.text}`}>{task.priority}</span>
-                    </div>
-                  </td>
-                  <td className="tasks-table-td-date">{task.date}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+                return (
+                  <tr key={task.id} className="group border-b border-slate-50 last:border-0 hover:bg-slate-50/50 transition-all cursor-pointer">
+                    <td className="py-4 pr-4">
+                      <div className="flex flex-col">
+                        <span className="text-[10px] font-black text-slate-400 mb-0.5 transition-colors uppercase tracking-widest group-hover:text-blue-500">{task.id}</span>
+                        <span className="text-slate-800 font-bold transition-colors truncate max-w-[150px] sm:max-w-[300px] lg:max-w-none inline-block group-hover:text-slate-900">{task.title}</span>
+                      </div>
+                    </td>
+                    <td className="py-4 text-center">
+                      <span className={`inline-flex px-2 py-0.5 rounded text-[10px] font-black tracking-widest shadow-sm ${sStyles}`}>
+                        {task.status.replace('_', ' ')}
+                      </span>
+                    </td>
+                    <td className="py-4 hidden sm:table-cell">
+                      <div className="flex items-center justify-center space-x-2.5">
+                        <div className={`w-2 h-2 rounded-full ring-4 transition-all duration-500 ${pStyles.dot}`}></div>
+                        <span className={`text-[10px] transition-colors ${pStyles.text}`}>{task.priority}</span>
+                      </div>
+                    </td>
+                    <td className="py-4 text-right text-slate-500 font-bold text-[11px] tabular-nums tracking-tighter hidden md:table-cell">{task.date}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        )}
       </div>
     </div>
   );
