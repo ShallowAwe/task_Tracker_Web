@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, type ReactNode, useCallback } from 'react';
+import React, { createContext, useContext, useState, useEffect, type ReactNode, useCallback, useMemo } from 'react';
 import type { HomeResponse } from '../types/home.types';
 import { homeService } from '../api/homeService';
 import { useAuth } from '../../features/auth/store/AuthContext';
@@ -21,7 +21,7 @@ export const HomeProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const fetchHomeData = useCallback(async () => {
     if (!isAuthenticated) return;
-    
+
     setIsLoading(true);
     setError(null);
     try {
@@ -35,17 +35,17 @@ export const HomeProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }
   }, [isAuthenticated]);
 
-  const selectProject = async (projectKey: string) => {
+  const selectProject = useCallback(async (projectKey: string) => {
     setIsLoading(true);
     try {
       await homeService.selectProject(projectKey);
-      await fetchHomeData(); // Reload home after selection as per flow requirement
+      await fetchHomeData();
     } catch (err) {
       console.error('Failed to select project:', err);
       setError('Failed to select project. Please try again.');
       setIsLoading(false);
     }
-  };
+  }, [fetchHomeData]);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -55,16 +55,16 @@ export const HomeProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }
   }, [isAuthenticated, fetchHomeData]);
 
+  const value = useMemo<HomeContextType>(() => ({
+    homeData,
+    isLoading,
+    refreshHome: fetchHomeData,
+    selectProject,
+    error,
+  }), [homeData, isLoading, fetchHomeData, selectProject, error]);
+
   return (
-    <HomeContext.Provider
-      value={{
-        homeData,
-        isLoading,
-        refreshHome: fetchHomeData,
-        selectProject,
-        error
-      }}
-    >
+    <HomeContext.Provider value={value}>
       {children}
     </HomeContext.Provider>
   );

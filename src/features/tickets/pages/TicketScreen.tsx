@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect, useCallback } from 'react';
+import { AnimatePresence } from 'framer-motion';
 import { useHome } from '../../../shared/store/HomeContext';
 import { ticketService } from '../api/ticketService';
 import TicketFilters from '../components/TicketFilters';
@@ -237,13 +238,17 @@ function TicketScreen() {
       )}
 
       {/* Ticket Detail Drawer */}
-      <TicketDetailDrawer 
-        ticket={selectedTicket}
-        onClose={() => setSelectedTicket(null)}
-        onUpdate={handleRefresh}
-        members={members}
-        projectId={projectId || 0}
-      />
+      <AnimatePresence>
+        {selectedTicket && (
+          <TicketDetailDrawer
+            ticket={selectedTicket}
+            onClose={() => setSelectedTicket(null)}
+            onUpdate={handleRefresh}
+            members={members}
+            projectId={projectId || 0}
+          />
+        )}
+      </AnimatePresence>
 
       {/* Create Ticket Modal */}
       <CreateTicketModal

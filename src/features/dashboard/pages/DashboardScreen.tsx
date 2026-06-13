@@ -1,4 +1,4 @@
-
+import { motion } from 'framer-motion';
 import {
   AlertCircle,
   Calendar as CalendarIcon,
@@ -14,9 +14,17 @@ import ProgressOverview from "../components/ProgressOverview";
 import ActivityFeed from "../components/ActivityFeed";
 import DeadlineSection from "../components/DeadlineSection";
 
-
-
 import { useHome } from "../../../shared/store/HomeContext";
+
+const stagger = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.08 } },
+};
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 16 },
+  show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 300, damping: 24 } },
+};
 
 type MetricEntry = MetricCardProps & { id: string };
 
@@ -97,24 +105,44 @@ export default function DashboardOverview() {
         {/* Left content */}
         <div className="col-span-12 xl:col-span-8 space-y-6">
           {/* Metrics */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <motion.div
+            variants={stagger}
+            initial="hidden"
+            animate="show"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"
+          >
             {metrics.map((metric) => (
-              <MetricCard key={metric.id} {...metric} />
+              <motion.div key={metric.id} variants={fadeUp}>
+                <MetricCard {...metric} />
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
 
           {/* Table */}
-          <TasksTable tasks={myWork} />
+          <motion.div variants={fadeUp} initial="hidden" animate="show">
+            <TasksTable tasks={myWork} />
+          </motion.div>
 
           {/* Activity */}
-          <ActivityFeed activities={activities} />
+          <motion.div variants={fadeUp} initial="hidden" animate="show">
+            <ActivityFeed activities={activities} />
+          </motion.div>
         </div>
 
         {/* Right rail */}
-        <div className="col-span-12 xl:col-span-4 space-y-6">
-          <ProgressOverview stats={workflowStats} totalCompletion={totalCompletion} />
-          <DeadlineSection deadlines={deadlines} />
-        </div>
+        <motion.div
+          variants={stagger}
+          initial="hidden"
+          animate="show"
+          className="col-span-12 xl:col-span-4 space-y-6"
+        >
+          <motion.div variants={fadeUp}>
+            <ProgressOverview stats={workflowStats} totalCompletion={totalCompletion} />
+          </motion.div>
+          <motion.div variants={fadeUp}>
+            <DeadlineSection deadlines={deadlines} />
+          </motion.div>
+        </motion.div>
       </div>
     </div>
   );

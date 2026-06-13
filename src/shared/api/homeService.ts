@@ -1,9 +1,7 @@
 import apiClient from './apiClient';
+import { formatRelativeTime, resolveWorkflowVariant } from './adapters';
 import type { HomeResponse } from '../types/home.types';
 
-/**
- * Interface representing the actual shape of the payload returned by the backend.
- */
 interface BackendHomeResponse {
   hasProjects: boolean;
   defaultProjectKey: string | null;
@@ -51,36 +49,6 @@ interface BackendHomeResponse {
 }
 
 /**
- * Formats an ISO string timestamp into a premium relative or absolute date representation.
- */
-const formatRelativeTime = (timestamp: string): string => {
-  if (!timestamp) return 'recently';
-  try {
-    const date = new Date(timestamp);
-    if (isNaN(date.getTime())) return 'recently';
-    
-    const now = new Date();
-    const diffMs = now.getTime() - date.getTime();
-    
-    // Safeguard against future times or tiny deviations
-    if (diffMs < 0) return 'just now';
-
-    const diffMins = Math.floor(diffMs / 60000);
-    const diffHours = Math.floor(diffMs / 3600000);
-    const diffDays = Math.floor(diffMs / 86400000);
-
-    if (diffMins < 1) return 'just now';
-    if (diffMins < 60) return `${diffMins}m ago`;
-    if (diffHours < 24) return `${diffHours}h ago`;
-    if (diffDays < 7) return `${diffDays}d ago`;
-    
-    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-  } catch (e) {
-    return 'recently';
-  }
-};
-
-/**
  * Adapter mapping actual backend response schema to expected frontend HomeResponse schema.
  */
 const adaptHomeResponse = (backend: BackendHomeResponse): HomeResponse => {
@@ -97,26 +65,13 @@ const adaptHomeResponse = (backend: BackendHomeResponse): HomeResponse => {
 
   // 2. Map Workflow stats & calculate dynamic completion percentage per column
   const totalWorkflowCount = backendWorkflow.reduce((sum, item) => sum + item.count, 0);
-  const workflowStats = backendWorkflow.map(item => {
-    const statusLower = item.status.toLowerCase();
-    let variant: 'success' | 'warning' | 'neutral' | 'danger' = 'neutral';
-    
-    if (statusLower.includes('resolved') || statusLower.includes('done') || statusLower.includes('complete')) {
-      variant = 'success';
-    } else if (statusLower.includes('progress') || statusLower.includes('active')) {
-      variant = 'warning';
-    } else if (statusLower.includes('closed')) {
-      variant = 'danger';
-    }
-
-    return {
-      id: item.status.toLowerCase().replace(/\s+/g, '-'),
-      label: item.status,
-      count: item.count,
-      percentage: totalWorkflowCount > 0 ? Math.round((item.count / totalWorkflowCount) * 100) : 0,
-      variant,
-    };
-  });
+  const workflowStats = backendWorkflow.map(item => ({
+    id: item.status.toLowerCase().replace(/\s+/g, '-'),
+    label: item.status,
+    count: item.count,
+    percentage: totalWorkflowCount > 0 ? Math.round((item.count / totalWorkflowCount) * 100) : 0,
+    variant: resolveWorkflowVariant(item.status),
+  }));
 
   // 3. Map Completion rate
   const totalCompletion = backendMetrics?.completionRate ?? summaryProject?.progress ?? 0;

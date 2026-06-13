@@ -4,5 +4,6 @@
       "Bash(npm install:*)",
       "Bash(npx tsc:*)"
     ]
-  }
+  },
+  "prefersReducedMotion": false
 }

@@ -2,6 +2,7 @@
 import { Outlet } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
 import DashboardHeader from '../components/DashboardHeader';
+import ErrorBoundary from '../components/ErrorBoundary';
 
 const MainLayout = () => {
   return (
@@ -10,7 +11,9 @@ const MainLayout = () => {
       <div className="flex-1 flex flex-col overflow-hidden">
         <DashboardHeader />
         <main className="flex-1 overflow-auto">
-          <Outlet />
+          <ErrorBoundary>
+            <Outlet />
+          </ErrorBoundary>
         </main>
       </div>
     </div>

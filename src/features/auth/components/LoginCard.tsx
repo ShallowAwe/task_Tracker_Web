@@ -1,5 +1,5 @@
 import React, { useState, type FormEvent } from "react";
-import { Eye, EyeOff, ShieldCheck, Loader2, AlertCircle } from "lucide-react";
+import { Eye, EyeOff, ShieldCheck, Loader2 } from "lucide-react";
 import { useLogin } from "../hooks/useLogin";
 
 const LoginCard: React.FC = () => {
@@ -9,7 +9,6 @@ const LoginCard: React.FC = () => {
 
   const loginMutation = useLogin();
   const isLoading = loginMutation.isPending;
-  const error = loginMutation.error as any;
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
@@ -32,18 +31,6 @@ const LoginCard: React.FC = () => {
               Access the multi-tenant project management portal
             </p>
           </div>
-
-          {/* Error Message */}
-          {loginMutation.isError && (
-            <div className="mb-6 p-4 rounded-2xl bg-red-50 border border-red-100 flex items-start gap-3 text-red-600 animate-[fade-in-down_0.3s_ease_both]">
-              <AlertCircle className="w-5 h-5 mt-0.5 shrink-0" />
-              <div className="text-sm font-medium">
-                {error?.response?.data?.message ||
-                  error?.message ||
-                  "Login failed. Please check your credentials."}
-              </div>
-            </div>
-          )}
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-6" noValidate>

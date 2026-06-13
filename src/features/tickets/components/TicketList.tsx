@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import type { Ticket } from '../types';
 import { AlertTriangle, Clock, CheckCircle, ChevronRight, User, Search } from 'lucide-react';
 
@@ -42,9 +43,12 @@ const TicketList: React.FC<TicketListProps> = ({ tickets, onTicketClick }) => {
 
   return (
     <div className="flex-1 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-y-auto">
-      {tickets.map((ticket) => (
-        <div 
-          key={ticket.id} 
+      {tickets.map((ticket, i) => (
+        <motion.div
+          key={ticket.id}
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: i * 0.03, type: 'spring', stiffness: 300, damping: 24 }}
           className="group flex flex-col md:flex-row md:items-center gap-4 p-5 border-b border-slate-100 last:border-0 hover:bg-slate-50/50 transition-colors cursor-pointer"
           onClick={() => onTicketClick(ticket)}
         >
@@ -89,7 +93,7 @@ const TicketList: React.FC<TicketListProps> = ({ tickets, onTicketClick }) => {
             
             <ChevronRight className="text-slate-300 group-hover:text-blue-500 group-hover:translate-x-1 transition-all" size={20} />
           </div>
-        </div>
+        </motion.div>
       ))}
     </div>
   );

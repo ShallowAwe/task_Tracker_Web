@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { 
-  LayoutGrid, AlertCircle, Clock, Users, Settings, 
-  Plus, HelpCircle, LogOut, ChevronLeft, ChevronRight 
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+  LayoutGrid, AlertCircle, Clock, Users, Settings,
+  Plus, HelpCircle, LogOut, ChevronLeft, ChevronRight
 } from 'lucide-react';
 import { useAuth } from '../../features/auth/store/AuthContext';
 
@@ -75,8 +76,14 @@ const Sidebar = () => {
             </button>
 
             {/* Project Switcher Dropdown */}
+            <AnimatePresence>
             {isProjectSwitcherOpen && !isCollapsed && (
-              <div className="absolute top-full left-0 right-0 mt-2 mx-2 bg-slate-900 border border-slate-800 rounded-xl shadow-2xl z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
+              <motion.div
+                initial={{ opacity: 0, y: -8, scale: 0.96 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -8, scale: 0.96 }}
+                transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                className="absolute top-full left-0 right-0 mt-2 mx-2 bg-slate-900 border border-slate-800 rounded-xl shadow-2xl z-50 overflow-hidden">
                 <div className="px-3 py-2 border-b border-slate-800">
                   <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Switch Project</p>
                 </div>
@@ -98,25 +105,32 @@ const Sidebar = () => {
                   <Plus size={14} />
                   <span>New Project</span>
                 </button>
-              </div>
+              </motion.div>
             )}
+            </AnimatePresence>
           </div>
 
           <nav className="space-y-1">
-            {navItems.map((item) => (
-              <NavLink
+            {navItems.map((item, i) => (
+              <motion.div
                 key={item.label}
-                to={item.to}
-                title={isCollapsed ? item.label : ''}
-                className={({ isActive }) =>
-                  `flex items-center rounded-lg text-sm font-medium transition-all ${isCollapsed ? 'justify-center p-2' : 'space-x-3 px-3 py-2'} ${
-                    isActive ? 'bg-blue-50 text-blue-700' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
-                  }`
-                }
+                initial={{ opacity: 0, x: -12 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: i * 0.05, type: 'spring', stiffness: 400, damping: 25 }}
               >
-                <item.icon size={18} className="shrink-0" />
-                {!isCollapsed && <span className="truncate">{item.label}</span>}
-              </NavLink>
+                <NavLink
+                  to={item.to}
+                  title={isCollapsed ? item.label : ''}
+                  className={({ isActive }) =>
+                    `flex items-center rounded-lg text-sm font-medium transition-all ${isCollapsed ? 'justify-center p-2' : 'space-x-3 px-3 py-2'} ${
+                      isActive ? 'bg-blue-50 text-blue-700' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                    }`
+                  }
+                >
+                  <item.icon size={18} className="shrink-0" />
+                  {!isCollapsed && <span className="truncate">{item.label}</span>}
+                </NavLink>
+              </motion.div>
             ))}
           </nav>
 

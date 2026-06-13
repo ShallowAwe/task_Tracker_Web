@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { Trash2, MessageCircle, ChevronDown, Check } from 'lucide-react';
 import type { TeamMember, MemberRole } from '../types';
 
@@ -33,6 +34,7 @@ interface MemberRowProps {
   onUpdateRole: (memberId: number, role: MemberRole) => Promise<void>;
   onRemove: (memberId: number) => Promise<void>;
   onChatOpen: (name: string, initial: string, bgClass: string) => void;
+  animationDelay?: number;
 }
 
 const MemberRow: React.FC<MemberRowProps> = ({
@@ -42,6 +44,7 @@ const MemberRow: React.FC<MemberRowProps> = ({
   onUpdateRole,
   onRemove,
   onChatOpen,
+  animationDelay = 0,
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
@@ -115,7 +118,12 @@ const MemberRow: React.FC<MemberRowProps> = ({
   const avatarBgClass = getAvatarBgClass(member.userName);
 
   return (
-    <tr className={`hover:bg-slate-50 transition-colors border-b border-slate-100 ${isUpdating ? 'opacity-50 pointer-events-none' : ''}`}>
+    <motion.tr
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: animationDelay, type: 'spring', stiffness: 300, damping: 24 }}
+      className={`hover:bg-slate-50 transition-colors border-b border-slate-100 ${isUpdating ? 'opacity-50 pointer-events-none' : ''}`}
+    >
       {/* Member Column */}
       <td className="px-6 py-4 flex items-center gap-3">
         <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm text-white shrink-0 shadow-sm ${avatarBgClass}`}>
@@ -201,7 +209,7 @@ const MemberRow: React.FC<MemberRowProps> = ({
           )}
         </div>
       </td>
-    </tr>
+    </motion.tr>
   );
 };
 

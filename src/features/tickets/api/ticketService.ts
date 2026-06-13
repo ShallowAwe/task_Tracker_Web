@@ -1,8 +1,14 @@
 import apiClient from '../../../shared/api/apiClient';
+import {
+  mapStatusFromBackend,
+  mapStatusToBackend,
+  mapPriorityFromBackend,
+  mapPriorityToBackend,
+} from '../../../shared/api/adapters';
+import type { BackendStatus, BackendPriority } from '../../../shared/api/adapters';
 import type {
   Ticket,
   TicketStatus,
-  TicketPriority,
   CreateIssuePayload,
   UpdateIssuePayload,
   Comment,
@@ -11,109 +17,38 @@ import type {
 
 // ─────────────────────────────────────────────────────────────
 // Backend Response Shape Interfaces
-// These mirror the raw JSON the API returns — NOT our frontend types.
 // ─────────────────────────────────────────────────────────────
 
-  interface BackendIssueResponse {
-    id: number;
-    projectId: number;
-    projectKey: string;
-    title: string;
-    description: string;
-    status: 'OPEN' | 'IN_PROGRESS' | 'RESOLVED' | 'CLOSED';
-    priority: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
-    reporterId: number;
-    reporterName: string;
-    assigneeId: number | null;
-    assigneeName: string | null;
-    dueDate: string | null;
-    createdAt: string;
-    updatedAt: string;
-  }
+interface BackendIssueResponse {
+  id: number;
+  projectId: number;
+  projectKey: string;
+  title: string;
+  description: string;
+  status: BackendStatus;
+  priority: BackendPriority;
+  reporterId: number;
+  reporterName: string;
+  assigneeId: number | null;
+  assigneeName: string | null;
+  dueDate: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
 
-  interface BackendCommentResponse {
-    id: number;
-    ticketId: number;
-    authorId: number;
-    authorName: string;
-    content: string;
-    createdAt: string;
-    updatedAt: string;
-  }
+interface BackendCommentResponse {
+  id: number;
+  ticketId: number;
+  authorId: number;
+  authorName: string;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+}
 
 interface PaginatedTicketsResponse {
   content: BackendIssueResponse[];
 }
-
-// ─────────────────────────────────────────────────────────────
-// Status & Priority Mappers
-// Convert between backend uppercase strings (e.g. "IN_PROGRESS")
-// and frontend display strings (e.g. "In Progress").
-// ─────────────────────────────────────────────────────────────
-
-/** Maps backend priority string → frontend TicketPriority */
-const mapPriorityFromBackend = (priority: string): TicketPriority => {
-    switch (priority.toUpperCase()) {
-      case 'CRITICAL':
-        return 'Critical';
-      case 'HIGH':
-        return 'High';
-      case 'MEDIUM':
-        return 'Medium';
-      case 'LOW':
-        return 'Low';
-      default:
-        return 'Medium';
-    }
-  };
-
-/** Maps frontend TicketPriority → backend uppercase string */
-const mapPriorityToBackend = (priority: TicketPriority): 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL' => {
-    switch (priority) {
-      case 'Critical':
-        return 'CRITICAL';
-      case 'High':
-        return 'HIGH';
-      case 'Medium':
-        return 'MEDIUM';
-      case 'Low':
-        return 'LOW';
-      default:
-        return 'MEDIUM';
-    }
-  };
-
-/** Maps backend status string → frontend TicketStatus */
-const mapStatusFromBackend = (status: string): TicketStatus => {
-    switch (status.toUpperCase()) {
-      case 'OPEN':
-        return 'Open';
-      case 'IN_PROGRESS':
-        return 'In Progress';
-      case 'RESOLVED':
-        return 'Resolved';
-      case 'CLOSED':
-        return 'Closed';
-      default:
-        return 'Open';
-    }
-  };
-
-/** Maps frontend TicketStatus → backend uppercase string for query params */
-const mapStatusToBackend = (status: TicketStatus): 'OPEN' | 'IN_PROGRESS' | 'RESOLVED' | 'CLOSED' => {
-    switch (status) {
-      case 'Open':
-        return 'OPEN';
-      case 'In Progress':
-        return 'IN_PROGRESS';
-      case 'Resolved':
-        return 'RESOLVED';
-      case 'Closed':
-        return 'CLOSED';
-      default:
-        return 'OPEN';
-    }
-  };
 
 // ─────────────────────────────────────────────────────────────
 // Ticket Adapter
@@ -351,4 +286,4 @@ export const ticketService = {
     },
   };
 
-  export { mapStatusToBackend, mapStatusFromBackend, mapPriorityToBackend, mapPriorityFromBackend };
+export { mapStatusToBackend, mapStatusFromBackend, mapPriorityToBackend, mapPriorityFromBackend };

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { X, User, Clock, AlertTriangle, CheckCircle, MessageSquare, Send, Trash2 } from 'lucide-react';
 import type { Ticket, Comment, ProjectMember, TicketStatus, TicketPriority } from '../types';
 import { ticketService } from '../api/ticketService';
@@ -60,6 +61,7 @@ const TicketDetailDrawer: React.FC<TicketDetailDrawerProps> = ({
     }
   };
 
+  // Render nothing when no ticket — AnimatePresence handles exit animation
   if (!ticket) return null;
 
   // ----------------------------------------------------
@@ -207,14 +209,22 @@ const TicketDetailDrawer: React.FC<TicketDetailDrawerProps> = ({
   return (
     <>
       {/* Backdrop */}
-      <div 
-        className={`fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[100] transition-opacity duration-300 ${isVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.2 }}
+        className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[100]"
         onClick={onClose}
       />
 
       {/* Drawer */}
-      <div 
-        className={`fixed top-0 right-0 h-full w-full max-w-2xl bg-white shadow-2xl z-[101] transform transition-transform duration-500 ease-out flex flex-col ${isVisible ? 'translate-x-0' : 'translate-x-full'}`}
+      <motion.div
+        initial={{ x: '100%' }}
+        animate={{ x: 0 }}
+        exit={{ x: '100%' }}
+        transition={{ type: 'spring', stiffness: 350, damping: 30 }}
+        className="fixed top-0 right-0 h-full w-full max-w-2xl bg-white shadow-2xl z-[101] flex flex-col"
       >
         {/* Header */}
         <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
@@ -406,7 +416,7 @@ const TicketDetailDrawer: React.FC<TicketDetailDrawerProps> = ({
             </button>
           </div>
         </div>
-      </div>
+      </motion.div>
     </>
   );
 };

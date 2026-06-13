@@ -58,11 +58,19 @@ const HomeGuard: React.FC = () => {
   }
 
   // STATE B: Has projects, none selected
-  if (homeData.hasProjects && !homeData.defaultProjectKey) {
+  if (!homeData.defaultProjectKey) {
     return <ProjectSelectionScreen />;
   }
 
-  // STATE C: Has default project
+  // STATE B2: Selected project no longer exists in the projects list
+  const projectExists = homeData.projects?.some(
+    (p) => p.key === homeData.defaultProjectKey
+  );
+  if (homeData.projects && !projectExists) {
+    return <ProjectSelectionScreen />;
+  }
+
+  // STATE C: Has valid default project
   return <Outlet />;
 };
 

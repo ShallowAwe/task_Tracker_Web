@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import { motion } from 'framer-motion';
 import { useHome } from '../../../shared/store/HomeContext';
 import { useAuth } from '../../auth/store/AuthContext';
 import { memberService } from '../api/memberService';
@@ -307,7 +308,7 @@ const TeamScreen: React.FC = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
-                {filteredMembers.map((member) => (
+                {filteredMembers.map((member, i) => (
                   <MemberRow
                     key={member.id}
                     member={member}
@@ -316,6 +317,7 @@ const TeamScreen: React.FC = () => {
                     onUpdateRole={handleUpdateRole}
                     onRemove={handleRemoveMember}
                     onChatOpen={handleChatOpen}
+                    animationDelay={i * 0.04}
                   />
                 ))}
               </tbody>
